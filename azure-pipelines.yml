@@ -24,11 +24,11 @@ jobs:
       cleanDestinationFolder: false 
     displayName: 'Extract libdragon-win64'
     continueOnError: false
-    
+
   - bash: |
       export N64_INST="%BUILD_SOURCESDIRECTORY%\toolchain\gcc-toolchain-mips64"
       export PATH=%PATH%;%BUILD_SOURCESDIRECTORY%\toolchain\gcc-toolchain-mips64\bin
-      env CFLAGS="-std=gnu99 -march=vr4300 -mtune=vr4300 -I$(CURDIR)/toolchain/libdragon/include" \
+      CFLAGS="-std=gnu99 -march=vr4300 -mtune=vr4300 -I$(CURDIR)/toolchain/libdragon/include" \
       LDFLAGS="-L$(N64_INST)/lib -Tn64ld.x" \
       LIBS="-ldragon -lc -ldragonsys -lnosys" \
       ./configure --host=mips64-elf --prefix=%BUILD_ARTIFACTSTAGINGDIRECTORY%
