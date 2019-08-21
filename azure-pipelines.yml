@@ -26,7 +26,7 @@ jobs:
     continueOnError: false
 
   - bash: |
-      export PATH=%PATH%;$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/bin
+      export PATH=$PATH:$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/bin
       CFLAGS="-std=gnu99 -march=vr4300 -mtune=vr4300 -I$BUILD_SOURCESDIRECTORY/toolchain/libdragon/include" \
       LDFLAGS="-L$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/lib -Tn64ld.x" \
       LIBS="-ldragon -lc -ldragonsys -lnosys" \
