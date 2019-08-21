@@ -13,8 +13,8 @@ jobs:
     continueOnError: false
 
   - script: |
-      curl -L https://dl.bintray.com/n64-tools/mips64-gcc-toolchain/gcc-toolchain-mips64-linux64-8.2.0-20181107.6.tar.gz --output gcc-toolchain-mips64-linux64.tar.gz
-      curl -L https://dl.bintray.com/n64-tools/libdragon/libdragon-win64-20181211.4.zip --output libdragon-win64.zip
+      curl -L https://n64tools.blob.core.windows.net/binaries/N64-tools/mips64-gcc-toolchain/master/latest/gcc-toolchain-mips64-linux64.tar.gz --output gcc-toolchain-mips64-linux64.tar.gz
+      curl -L https://n64tools.blob.core.windows.net/binaries/N64-tools/libdragon/develop/latest/libdragon-linux64.tar.gz --output libdragon-win64.zip
     displayName: 'Get dependencies'
     continueOnError: false
 
@@ -36,6 +36,9 @@ jobs:
 
   - bash: |
       export PATH=$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/bin:$PATH
+      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/x86_64-pc-linux-gnu/mips64-elf/lib
+      sudo ldconfig
+      
       CFLAGS="-std=gnu99 -march=vr4300 -mtune=vr4300 -I$BUILD_SOURCESDIRECTORY/toolchain/libdragon/include" \
       LDFLAGS="-L$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/lib -Tn64ld.x" \
       LIBS="-ldragon -lc -ldragonsys -lnosys" \
