@@ -11,7 +11,7 @@ jobs:
 
   - task: ExtractFiles@1
     inputs:
-      archiveFilePatterns: 'gcc-toolchain-mips64-linux64.zip' 
+      archiveFilePatterns: 'gcc-toolchain-mips64-linux64.tar.gz' 
       destinationFolder: toolchain/gcc-toolchain-mips64
       cleanDestinationFolder: false 
     displayName: 'Extract gcc-toolchain-mips64-linux64'
