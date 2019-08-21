@@ -1,20 +1,20 @@
 jobs:
-- job: Windows
+- job: Linux
   pool:
-    vmImage: 'vs2017-win2016'
+    vmImage: 'ubuntu-16.04'
   steps:
   - script: |
-      curl -L https://dl.bintray.com/n64-tools/mips64-gcc-toolchain/gcc-toolchain-mips64-win64-8.2.0-20181107.6.zip --output gcc-toolchain-mips64-win64.zip
+      curl -L https://dl.bintray.com/n64-tools/mips64-gcc-toolchain/:gcc-toolchain-mips64-linux64-8.2.0-20181107.6.tar.gz --output gcc-toolchain-mips64-linux64.zip
       curl -L https://dl.bintray.com/n64-tools/libdragon/libdragon-win64-20181211.4.zip --output libdragon-win64.zip
     displayName: 'Get dependencies'
     continueOnError: false
 
   - task: ExtractFiles@1
     inputs:
-      archiveFilePatterns: 'gcc-toolchain-mips64-win64.zip' 
+      archiveFilePatterns: 'gcc-toolchain-mips64-linux64.zip' 
       destinationFolder: toolchain/gcc-toolchain-mips64
       cleanDestinationFolder: false 
-    displayName: 'Extract gcc-toolchain-mips64-win64'
+    displayName: 'Extract gcc-toolchain-mips64-linux64'
     continueOnError: false
 
   - task: ExtractFiles@1
@@ -26,7 +26,7 @@ jobs:
     continueOnError: false
 
   - bash: |
-      export PATH=%PATH%;$BUILD_SOURCESDIRECTORY\toolchain\gcc-toolchain-mips64\bin
+      export PATH=%PATH%;$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/bin
       CFLAGS="-std=gnu99 -march=vr4300 -mtune=vr4300 -I$BUILD_SOURCESDIRECTORY/toolchain/libdragon/include" \
       LDFLAGS="-L$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/lib -Tn64ld.x" \
       LIBS="-ldragon -lc -ldragonsys -lnosys" \
@@ -41,7 +41,7 @@ jobs:
     displayName: Publish Build Artifacts
     inputs:
       pathtoPublish: '$(Build.ArtifactStagingDirectory)'
-      artifactName: 'libmikmod' 
+      artifactName: 'libmad' 
       publishLocation: 'Container' # Options: container, filePath
       #targetPath: # Required when publishLocation == FilePath
       parallel: true # Optional
@@ -50,8 +50,8 @@ jobs:
   - task: GithubRelease@0 
     displayName: 'Create GitHub Release'      
     inputs:
-      gitHubConnection: libmikmod
-      repositoryName: N64-tools/libmikmod
+      gitHubConnection: libmad
+      repositoryName: N64-tools/libmad
       #tagSource: manual
       #tag: $(Build.BuildNumber)      
       assets: |
