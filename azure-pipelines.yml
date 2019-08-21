@@ -47,16 +47,16 @@ jobs:
       parallel: true # Optional
       #parallelCount: # Optional
 
-  - task: GithubRelease@0 
-    displayName: 'Create GitHub Release'      
-    inputs:
-      gitHubConnection: libmad
-      repositoryName: N64-tools/libmad
-      #tagSource: manual
-      #tag: $(Build.BuildNumber)      
-      assets: |
-           $(Build.ArtifactStagingDirectory)/*
-      isDraft: true # Optional
-      action: 'create' # Options: create, edit, delete
-      target: '$(Build.SourceVersion)' # Required when action == Create || Action == Edit
-      tagSource: 'auto' # Required when action == Create# Options: auto, manual
+  #- task: GithubRelease@0 
+  #  displayName: 'Create GitHub Release'      
+  #  inputs:
+  #    gitHubConnection: libmad
+  #    repositoryName: N64-tools/libmad
+  #    #tagSource: manual
+  #    #tag: $(Build.BuildNumber)      
+  #    assets: |
+  #         $(Build.ArtifactStagingDirectory)/*
+  #    isDraft: true # Optional
+  #    action: 'create' # Options: create, edit, delete
+  #    target: '$(Build.SourceVersion)' # Required when action == Create || Action == Edit
+  #    tagSource: 'auto' # Required when action == Create# Options: auto, manual
