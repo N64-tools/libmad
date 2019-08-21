@@ -1,0 +1,63 @@
+jobs:
+- job: Windows
+  pool:
+    vmImage: 'vs2017-win2016'
+  steps:
+  - script: |
+      curl -L https://dl.bintray.com/n64-tools/mips64-gcc-toolchain/gcc-toolchain-mips64-win64-8.2.0-20181107.6.zip --output gcc-toolchain-mips64-win64.zip
+      curl -L https://dl.bintray.com/n64-tools/libdragon/libdragon-win64-20181211.4.zip --output libdragon-win64.zip
+    displayName: 'Get dependencies'
+    continueOnError: false
+
+  - task: ExtractFiles@1
+    inputs:
+      archiveFilePatterns: 'gcc-toolchain-mips64-win64.zip' 
+      destinationFolder: toolchain/gcc-toolchain-mips64
+      cleanDestinationFolder: false 
+    displayName: 'Extract gcc-toolchain-mips64-win64'
+    continueOnError: false
+
+  - task: ExtractFiles@1
+    inputs:
+      archiveFilePatterns: 'libdragon-win64.zip' 
+      destinationFolder: toolchain/libdragon
+      cleanDestinationFolder: false 
+    displayName: 'Extract libdragon-win64'
+    continueOnError: false
+    
+  - script: |
+      set N64_INST="%BUILD_SOURCESDIRECTORY%\toolchain\gcc-toolchain-mips64"
+      set PATH=%PATH%;%BUILD_SOURCESDIRECTORY%\toolchain\gcc-toolchain-mips64\bin
+      CFLAGS="-std=gnu99 -march=vr4300 -mtune=vr4300 -I$(CURDIR)/toolchain/libdragon/include" \
+      LDFLAGS="-L$(N64_INST)/lib -Tn64ld.x" \
+      LIBS="-ldragon -lc -ldragonsys -lnosys" \
+      ./configure --host=mips64-elf --prefix=%BUILD_ARTIFACTSTAGINGDIRECTORY%
+      make
+      make install
+    displayName: 'Build Lib'
+    continueOnError: false
+
+  # Publish build artifacts to Azure Artifacts/TFS or a file share
+  - task: PublishBuildArtifacts@1
+    displayName: Publish Build Artifacts
+    inputs:
+      pathtoPublish: '$(Build.ArtifactStagingDirectory)'
+      artifactName: 'libmikmod' 
+      publishLocation: 'Container' # Options: container, filePath
+      #targetPath: # Required when publishLocation == FilePath
+      parallel: true # Optional
+      #parallelCount: # Optional
+
+  - task: GithubRelease@0 
+    displayName: 'Create GitHub Release'      
+    inputs:
+      gitHubConnection: libmikmod
+      repositoryName: N64-tools/libmikmod
+      #tagSource: manual
+      #tag: $(Build.BuildNumber)      
+      assets: |
+           $(Build.ArtifactStagingDirectory)/*
+      isDraft: true # Optional
+      action: 'create' # Options: create, edit, delete
+      target: '$(Build.SourceVersion)' # Required when action == Create || Action == Edit
+      tagSource: 'auto' # Required when action == Create# Options: auto, manual
