@@ -26,12 +26,11 @@ jobs:
     continueOnError: false
 
   - bash: |
-      export N64_INST="%BUILD_SOURCESDIRECTORY%\toolchain\gcc-toolchain-mips64"
-      export PATH=%PATH%;%BUILD_SOURCESDIRECTORY%\toolchain\gcc-toolchain-mips64\bin
-      CFLAGS="-std=gnu99 -march=vr4300 -mtune=vr4300 -I$(CURDIR)/toolchain/libdragon/include" \
-      LDFLAGS="-L$(N64_INST)/lib -Tn64ld.x" \
+      export PATH=%PATH%;$BUILD_SOURCESDIRECTORY\toolchain\gcc-toolchain-mips64\bin
+      CFLAGS="-std=gnu99 -march=vr4300 -mtune=vr4300 -I$BUILD_SOURCESDIRECTORY/toolchain/libdragon/include" \
+      LDFLAGS="-L$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/lib -Tn64ld.x" \
       LIBS="-ldragon -lc -ldragonsys -lnosys" \
-      ./configure --host=mips64-elf --prefix=%BUILD_ARTIFACTSTAGINGDIRECTORY%
+      ./configure --host=mips64-elf --prefix=$BUILD_ARTIFACTSTAGINGDIRECTORY
       make
       make install
     displayName: 'Build Lib'
