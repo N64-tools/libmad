@@ -36,13 +36,13 @@ jobs:
 
   - bash: |
       export PATH=$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/bin:$PATH
-      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/x86_64-pc-linux-gnu/mips64-elf/lib
+      export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BUILD_SOURCESDIRECTORY/toolchain/libdragon/gcc-toolchain-mips64/x86_64-pc-linux-gnu/mips64-elf/lib/
       sudo ldconfig
       
       CC="$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/bin/mips64-elf-gcc" \
       LD="$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/bin/mips64-elf-ld" \
-      CFLAGS="-std=c17 -march=vr4300 -mtune=vr4300 -I$BUILD_SOURCESDIRECTORY/toolchain/libdragon/include" \
-      LDFLAGS="-T$BUILD_SOURCESDIRECTORY/toolchain/libdragon/lib/n64ld.x" \
+      CFLAGS="-std=c17 -march=vr4300 -mtune=vr4300 -I$BUILD_SOURCESDIRECTORY/toolchain/libdragon/gcc-toolchain-mips64/mips64-elf/include/" \
+      LDFLAGS="-T$BUILD_SOURCESDIRECTORY/toolchain/libdragon/gcc-toolchain-mips64/mips64-elf/lib/n64ld.x" \
       LIBS="-ldragon -lc -ldragonsys -lnosys" \
       ./configure --prefix=$BUILD_ARTIFACTSTAGINGDIRECTORY
       make
