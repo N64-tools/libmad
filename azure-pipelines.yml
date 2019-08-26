@@ -44,7 +44,7 @@ jobs:
       CFLAGS="-std=c17 -march=vr4300 -mtune=vr4300 -I$BUILD_SOURCESDIRECTORY/toolchain/libdragon/gcc-toolchain-mips64/mips64-elf/include/" \
       LDFLAGS="-L$BUILD_SOURCESDIRECTORY/toolchain/libdragon/gcc-toolchain-mips64/mips64-elf/lib/ -Tn64ld.x" \
       LIBS="-ldragon -lc -ldragonsys -lnosys" \
-      ./configure --prefix=$BUILD_ARTIFACTSTAGINGDIRECTORY
+      ./configure --host=mips64-elf --prefix=$BUILD_ARTIFACTSTAGINGDIRECTORY
       make
       make install
       cat config.log
