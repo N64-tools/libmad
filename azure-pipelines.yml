@@ -13,18 +13,18 @@ jobs:
     continueOnError: false
 
   - script: |
-      curl -L https://n64tools.blob.core.windows.net/binaries/N64-tools/mips64-gcc-toolchain/master/latest/gcc-toolchain-mips64-linux64.tar.gz --output gcc-toolchain-mips64-linux64.tar.gz
+      #curl -L https://n64tools.blob.core.windows.net/binaries/N64-tools/mips64-gcc-toolchain/master/latest/gcc-toolchain-mips64-linux64.tar.gz --output gcc-toolchain-mips64-linux64.tar.gz
       curl -L https://n64tools.blob.core.windows.net/binaries/N64-tools/libdragon/develop/latest/libdragon-linux64.tar.gz --output libdragon-linux64.tar.gz
     displayName: 'Get dependencies'
     continueOnError: false
 
-  - task: ExtractFiles@1
-    inputs:
-      archiveFilePatterns: 'gcc-toolchain-mips64-linux64.tar.gz' 
-      destinationFolder: toolchain/gcc-toolchain-mips64
-      cleanDestinationFolder: false 
-    displayName: 'Extract gcc-toolchain-mips64-linux64'
-    continueOnError: false
+#  - task: ExtractFiles@1
+#    inputs:
+#      archiveFilePatterns: 'gcc-toolchain-mips64-linux64.tar.gz' 
+#      destinationFolder: toolchain/gcc-toolchain-mips64
+#      cleanDestinationFolder: false 
+#    displayName: 'Extract gcc-toolchain-mips64-linux64'
+#    continueOnError: false
 
   - task: ExtractFiles@1
     inputs:
@@ -35,12 +35,12 @@ jobs:
     continueOnError: false
 
   - bash: |
-      export PATH=$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/bin:$PATH
+      export PATH=$BUILD_SOURCESDIRECTORY/toolchain/libdragon/gcc-toolchain-mips64/bin:$PATH
       export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:$BUILD_SOURCESDIRECTORY/toolchain/libdragon/gcc-toolchain-mips64/x86_64-pc-linux-gnu/mips64-elf/lib/
       sudo ldconfig
       
-      CC="$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/bin/mips64-elf-gcc" \
-      LD="$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/bin/mips64-elf-ld" \
+      #CC="$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/bin/mips64-elf-gcc" \
+      #LD="$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/bin/mips64-elf-ld" \
       CFLAGS="-std=c17 -march=vr4300 -mtune=vr4300 -I$BUILD_SOURCESDIRECTORY/toolchain/libdragon/gcc-toolchain-mips64/mips64-elf/include/" \
       LDFLAGS="-L$BUILD_SOURCESDIRECTORY/toolchain/libdragon/gcc-toolchain-mips64/mips64-elf/lib/ -Tn64ld.x" \
       LIBS="-ldragon -lc -ldragonsys -lnosys" \
