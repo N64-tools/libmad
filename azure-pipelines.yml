@@ -47,8 +47,9 @@ jobs:
       ./configure --prefix=$BUILD_ARTIFACTSTAGINGDIRECTORY
       make
       make install
+      cat config.log
     displayName: 'Build Lib'
-    continueOnError: false
+    continueOnError: true
 
   # Publish build artifacts to Azure Artifacts/TFS or a file share
   - task: PublishBuildArtifacts@1
