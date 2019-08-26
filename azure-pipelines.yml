@@ -13,18 +13,9 @@ jobs:
     continueOnError: false
 
   - script: |
-      #curl -L https://n64tools.blob.core.windows.net/binaries/N64-tools/mips64-gcc-toolchain/master/latest/gcc-toolchain-mips64-linux64.tar.gz --output gcc-toolchain-mips64-linux64.tar.gz
       curl -L https://n64tools.blob.core.windows.net/binaries/N64-tools/libdragon/develop/latest/libdragon-linux64.tar.gz --output libdragon-linux64.tar.gz
     displayName: 'Get dependencies'
     continueOnError: false
-
-#  - task: ExtractFiles@1
-#    inputs:
-#      archiveFilePatterns: 'gcc-toolchain-mips64-linux64.tar.gz' 
-#      destinationFolder: toolchain/gcc-toolchain-mips64
-#      cleanDestinationFolder: false 
-#    displayName: 'Extract gcc-toolchain-mips64-linux64'
-#    continueOnError: false
 
   - task: ExtractFiles@1
     inputs:
@@ -47,7 +38,7 @@ jobs:
       ./configure --host=mips64-elf --prefix=$BUILD_ARTIFACTSTAGINGDIRECTORY
       make
       make install
-      cat config.log
+      #cat config.log #use for debug
     displayName: 'Build Lib'
     continueOnError: true
 
