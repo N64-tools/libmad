@@ -42,7 +42,7 @@ jobs:
       CC="$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/bin/mips64-elf-gcc" \
       LD="$BUILD_SOURCESDIRECTORY/toolchain/gcc-toolchain-mips64/bin/mips64-elf-ld" \
       CFLAGS="-std=c17 -march=vr4300 -mtune=vr4300 -I$BUILD_SOURCESDIRECTORY/toolchain/libdragon/gcc-toolchain-mips64/mips64-elf/include/" \
-      LDFLAGS="-T$BUILD_SOURCESDIRECTORY/toolchain/libdragon/gcc-toolchain-mips64/mips64-elf/lib/n64ld.x" \
+      LDFLAGS="-L$BUILD_SOURCESDIRECTORY/toolchain/libdragon/gcc-toolchain-mips64/mips64-elf/lib/ -Tn64ld.x" \
       LIBS="-ldragon -lc -ldragonsys -lnosys" \
       ./configure --prefix=$BUILD_ARTIFACTSTAGINGDIRECTORY
       make
